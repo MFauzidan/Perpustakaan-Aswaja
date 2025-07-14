@@ -1,0 +1,89 @@
+/* ====================
+   Font Global
+==================== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #d1f7d6, #a8e6cf); /* hijau pastel gradient */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* ====================
+   Overlay Card
+==================== */
+.overlay {
+  background: rgba(255, 255, 255, 0.8); /* semi transparan */
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* ====================
+   Gambar Buku
+==================== */
+.book-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+
+
+.book-image:hover {
+    transform: scale(1.03);
+}
+
+/* ====================
+   Judul & Heading
+==================== */
+h2 {
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2e5e4e; /* hijau tua biar matching */
+}
+
+h5 {
+    font-weight: 500;
+    color: #3c7c66;
+}
+
+/* ====================
+   Paragraf Umum
+==================== */
+p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* ====================
+   Sinopsis Panjang
+==================== */
+.sinopsis-detail {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 700px;
+}
+
+/* ====================
+   Tombol Kembali
+==================== */
+.btn-outline-light {
+    border-color: #3c7c66;
+    color: #3c7c66;
+}
+
+.btn-outline-light:hover {
+    background: #3c7c66;
+    color: #fff;
+}

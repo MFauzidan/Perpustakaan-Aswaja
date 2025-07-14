@@ -1,0 +1,25 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.category-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.category-card:hover {
+    background-color: #e9f5e9;
+    transform: translateY(-4px);
+}
+
+.icon {
+    color: #333;
+}
+
+.kategori-nama {
+    font-weight: 600;
+    font-size: 1rem;
+}
