@@ -52,7 +52,9 @@ class BukuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('judul')->searchable(),
                 Tables\Columns\TextColumn::make('penulis')->searchable(),
-                Tables\Columns\ImageColumn::make('gambar'),
+                Tables\Columns\ImageColumn::make('gambar')
+    ->getStateUsing(fn ($record) => asset('storage/' . $record->gambar)),
+
                 Tables\Columns\TextColumn::make('sinopsis')
                         ->formatStateUsing(fn (string $state): string => strip_tags($state))
                         ->limit(20)
