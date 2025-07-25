@@ -13,7 +13,7 @@ class ListBukus extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label('Tambah Buku'),
+            Actions\CreateAction::make()->label('New'),
         ];
     }
 }

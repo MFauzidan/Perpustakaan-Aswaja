@@ -13,7 +13,7 @@ class ListPeminjams extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label('Tambah Peminjam'),
+            Actions\CreateAction::make()->label('New'),
         ];
     }
 }

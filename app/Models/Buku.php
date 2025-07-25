@@ -11,15 +11,20 @@ class Buku extends Model
     use HasFactory;
 
     protected $fillable = [
-        'judul',
-        'penulis',
-        'gambar',
-        'sinopsis',
-        'kategori_id', // sudah diganti dari id_kategori ke kategori_id
-        'jumlah_asli',
-        'jumlah_sekarang',
-        'kode_penempatan',
-    ];
+    'judul',
+    'penulis',
+    'penerbit',          // ✅ baru
+    'tahun_terbit',      // ✅ baru
+    'jumlah_halaman',    // ✅ baru
+    'gambar',
+    'sinopsis',
+    'kategori_id',
+    'subkategori_id',
+    'jumlah_asli',
+    'jumlah_sekarang',
+    'kode_penempatan',
+];
+
 
     public function kategori()
     {
@@ -52,5 +57,10 @@ class Buku extends Model
     public function getCoverUrlAttribute()
     {
         return $this->gambar ? asset('storage/' . $this->gambar) : null;
+    }
+
+    public function subkategori()
+    {
+        return $this->belongsTo(Subkategori::class);
     }
 }

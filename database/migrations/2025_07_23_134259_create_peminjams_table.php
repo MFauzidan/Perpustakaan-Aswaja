@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('jumlah_pinjam');
             $table->date('batas_pengembalian');
             $table->string('jaminan');
+            $table->boolean('status')->default(true);
+
             $table->timestamps();
         });
     }

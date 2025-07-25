@@ -5,41 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; // Pastikan ini ada
 
-class HomepageController extends Controller
+class homepageController extends Controller
 {
     public function index(Request $request)
     {
-        $kategoriDipilih = $request->input('kategori'); // id_kategori (optional)
-        $sort = $request->input('sort', 'terbaru'); // default: terbaru
+        $query = $request->input('query', '');
+        $subkategoriDipilih = $request->input('subkategori', null);
 
-        // Ambil semua kategori
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::with('subkategoris')->get();
 
-        // =============================
-        // Bagian Buku Terbaru (TIDAK TERFILTER kategori)
-        // =============================
-        $bukuTerbaru = Buku::with('kategori')
-            ->orderBy('created_at', $sort === 'terlama' ? 'asc' : 'desc')
-            ->limit(10)
-            ->get();
+        // Ambil semua buku yang akan difilter di sisi klien
+        $allBooksForFiltering = Buku::select('id', 'judul', 'penulis', 'gambar', 'kategori_id', 'subkategori_id', 'created_at')
+                                    ->get();
 
-        // =============================
-        // Bagian Semua Buku (FILTER berdasarkan kategori)
-        // =============================
-        $semuaBuku = Buku::with('kategori')
-            ->when($kategoriDipilih, function ($query) use ($kategoriDipilih) {
-                $query->where('kategori_id', $kategoriDipilih);
-            })
-            ->orderBy('judul', 'asc')
-            ->get();
+        // Ambil buku terbaru untuk diurutkan JS di section "Buku Terbaru"
+        $bukuTerbaruUntukJS = Buku::orderBy('created_at', 'desc')->take(50)->get();
 
         return view('homepage', compact(
             'kategoris',
-            'kategoriDipilih',
-            'sort',
-            'bukuTerbaru',
-            'semuaBuku'
+            'query',
+            'subkategoriDipilih',
+            'bukuTerbaruUntukJS',
+            'allBooksForFiltering'
         ));
     }
 }

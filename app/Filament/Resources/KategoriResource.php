@@ -77,4 +77,10 @@ class KategoriResource extends Resource
             'edit' => Pages\EditKategori::route('/{record}/edit'),
         ];
     }
+
+
+        public static function getNavigationSort(): ?int
+    {
+        return 2; // Ubah sesuai urutan yang kamu mau
+    }
 }

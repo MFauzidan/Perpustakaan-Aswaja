@@ -9,8 +9,10 @@ class KategoriController extends Controller
 {
     public function index()
     {
+        // Mengambil semua data kategori beserta subkategorinya
+    $kategoris = Kategori::with('subkategoris')->get();
 
-    $kategoris = Kategori::all();
+        // Kirim Ke View
     return view('Kategori', compact('kategoris'));
 
     }

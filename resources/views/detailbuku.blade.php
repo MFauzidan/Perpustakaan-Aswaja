@@ -22,9 +22,16 @@
       </div>
       <div class="col-md-6">
         <h2>{{ $buku->judul }}</h2>
-        <p><strong>Kategori :</strong> {{ $buku->kategori->nama ?? '-' }}</p>
-        <p><strong>Penulis :</strong> {{ $buku->penulis }}</p>
-        <p><strong>Kode Penempatan :</strong> {{ $buku->kode_penempatan }}</p>
+          <p><strong>Penulis:</strong> {{ $buku->penulis }}</p>
+          <p><strong>Penerbit:</strong> {{ $buku->penerbit }}</p>
+          <p><strong>Tahun Terbit:</strong> {{ $buku->tahun_terbit }}</p>
+          <p><strong>Jumlah Halaman:</strong> {{ $buku->jumlah_halaman }} halaman</p>
+          <p><strong>Kategori:</strong> {{ $buku->kategori->nama }}</p>
+          <p><strong>Lokasi Rak:</strong> {{ $buku->kode_penempatan }}</p>
+          <p><strong>Stok Tersedia:</strong> {{ $buku->jumlah_asli }} dari {{ $buku->jumlah_sekarang }} buku</p>
+
+
+
 
         <hr>
         <h5>Sinopsis:</h5>
