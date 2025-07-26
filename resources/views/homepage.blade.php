@@ -119,7 +119,7 @@
                 </div>
             </div>
         @empty
-            {{-- Ini akan ditampilkan jika $allBooksForFiltering kosong dari controller --}}
+            <!-- {{-- Ini akan ditampilkan jika $allBooksForFiltering kosong dari controller --}} -->
             <p class="text-muted" id="noInitialBooksMessage">Tidak ada buku ditemukan.</p>
         @endforelse
     </div>
