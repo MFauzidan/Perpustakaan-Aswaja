@@ -14,6 +14,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- Favicons -->
+    <link href="/assets/img/logo.jpg" rel="icon" >
+
     <link href="{{ asset('css/homepage.css') }}" rel="stylesheet">
     <style>
         /* Gaya tambahan untuk menyembunyikan buku yang tidak cocok */
@@ -27,9 +30,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3">
     <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-2 px-md-3">
 
-        <a class="navbar-brand mb-0 h1 d-flex align-items-center text-truncate" href="#">
+        <a class="navbar-brand mb-0 h1 d-flex align-items-center text-truncate" href="#" style="max-width: 75%;">
             <img src="/assets/img/logo.jpg" alt="Logo" class="navbar-logo">
-            <span class="fw-bold ms-2">Perpustakaan Pesantren Pelajar Mahasiswa Aswaja Nusantara PPM-AN</span>
+            <span class="fw-bold ms-2 library-name">Perpustakaan Pesantren Pelajar Mahasiswa Aswaja Nusantara PPM-AN</span>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
@@ -37,7 +40,7 @@
         </button>
 
         <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto w-100 justify-content-end text-end mt-2 mt-lg-0">
                 <li class="nav-item"><a class="nav-link" href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram fa-lg"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube fa-lg"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook fa-lg"></i></a></li>
@@ -46,6 +49,7 @@
 
     </div>
 </nav>
+
 
 <section class="hero text-center">
     <div class="container">
