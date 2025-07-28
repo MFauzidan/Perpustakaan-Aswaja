@@ -21,7 +21,11 @@ class homepageController extends Controller
                                     ->get();
 
         // Ambil buku terbaru untuk diurutkan JS di section "Buku Terbaru"
-        $bukuTerbaruUntukJS = Buku::orderBy('created_at', 'desc')->take(50)->get();
+        // $bukuTerbaruUntukJS = Buku::orderBy('created_at', 'desc')->take(50)->get();
+
+        $sort = $request->input('sort', 'terbaru');
+        $bukuTerbaruUntukJS = Buku::orderBy('created_at', $sort === 'terlama' ? 'asc' : 'desc')->take(50)->get();
+
 
         return view('homepage', compact(
             'kategoris',

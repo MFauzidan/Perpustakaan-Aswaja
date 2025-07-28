@@ -2,62 +2,124 @@
    HERO BAGIAN DAFTAR SEMUA BUKU
 ====================================== */
 
+
 .hero {
-  background: url('/assets/img/bg-detail.jpg') no-repeat center center fixed;
+  background: url('/assets/img/bg5.jpg') no-repeat center center fixed;
   background-size: cover;
   padding-top: 140px;
   padding-bottom: 60px;
-  min-height: 60vh;
+  min-height: 70vh;
   color: white;
   text-align: center;
   position: relative;
 }
 
-/* Overlay transparan */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3); /* Ubah angka 0.3 sesuai tingkat transparansi (0.0 - 1.0) */
+  background: rgba(0, 0, 0, 0.3);
   z-index: 1;
 }
 
 .hero .container {
   position: relative;
-  z-index: 2; /* Supaya konten tetap di atas overlay */
+  z-index: 2;
 }
 
-
-/* --- HERO Responsive --- */
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .hero {
-    padding-top: 120px; /* Navbar mobile lebih kecil */
-    padding-bottom: 40px;
-  }
-
-  .hero .row .col-auto h5,
-  .hero .row .col-auto button {
-    font-size: 14px;
+    padding-top: 80px;
   }
 }
 
 /* -------------------------------
    Navbar Logo
 -------------------------------- */
+/* -------------------------------
+   Logo di Navbar
+-------------------------------- */
 .navbar-logo {
-  width: 40px;
-  height: 40px;
+  height: 50px;
+  width: 50px;
   object-fit: cover;
   border-radius: 50%;
+  margin-right: 8px;
 }
 
-/* --- Navbar Logo Responsive --- */
 @media (max-width: 576px) {
   .navbar-logo {
-    width: 32px;
-    height: 32px;
+    height: 40px;
+    width: 40px;
   }
 }
+
+/* -------------------------------
+   Judul & Subjudul Perpustakaan
+-------------------------------- */
+.library-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff; /* warna putih di atas bg gelap */
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.library-subtitle {
+  font-size: 0.9rem;
+  color: #cccccc; /* sedikit abu-abu agar beda dari title */
+  line-height: 1.2;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 576px) {
+  .library-title {
+    font-size: 14px;
+    max-width: 200px;
+    white-space: normal;
+  }
+
+  .library-subtitle {
+    font-size: 12px;
+    max-width: 200px;
+    white-space: normal;
+  }
+}
+
+/* ======================================
+   SEARCH BOX
+====================================== */
+
+.search-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+  flex: 1;
+  border: 1px solid #ced4da;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  padding: 10px 15px;
+}
+
+.search-btn {
+  border: 1px solid #ced4da;
+  border-radius: 0 4px 4px 0;
+  background: #f8f9fa;
+  color: #333;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.search-btn:hover {
+  background: #e2e6ea;
+}
+
+
 
 /* -------------------------------
    Card Buku
@@ -106,37 +168,6 @@
   justify-content: center;
 }
 
-/* -------------------------------
-   Search Form
--------------------------------- */
-.search-form {
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.search-input {
-  flex: 1;
-  border: 1px solid #ced4da;
-  border-right: none;
-  border-radius: 4px 0 0 4px;
-  padding: 10px 15px;
-}
-
-.search-btn {
-  border: 1px solid #ced4da;
-  border-radius: 0 4px 4px 0;
-  background: #f8f9fa;
-  color: #333;
-  padding: 10px 20px;
-  transition: background 0.3s;
-  cursor: pointer;
-}
-
-.search-btn:hover {
-  background: #e2e6ea;
-}
 
 /* --- Search Form Responsive --- */
 @media (max-width: 576px) {
@@ -236,4 +267,64 @@
 -------------------------------- */
 main.container {
   padding-top: 100px;
+}
+
+
+/* ======================================
+   FOOTER
+====================================== */
+
+.footer {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  font-size: 14px;
+  text-align: center;
+  padding: 30px 0;
+  position: relative;
+}
+
+.footer h3 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.footer p {
+  font-size: 15px;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.footer .social-links {
+  margin-bottom: 30px;
+}
+
+.footer .social-links a {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  line-height: 1;
+  margin: 0 4px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  transition: 0.3s;
+}
+
+.footer .social-links a:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 20%);
+  text-decoration: none;
+}
+
+.footer .copyright {
+  padding-top: 25px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.footer .credits {
+  font-size: 13px;
+  padding-top: 5px;
 }

@@ -30,17 +30,30 @@
 }
 
 
+/* Subjudul */
+.library-subtitle {
+  font-size: 0.90rem;
+  /* color: #6c757d; abu-abu seperti Bootstrap text-muted */
+  line-height: 1.2;
+}
+
+@media (max-width: 576px) {
+  .library-subtitle {
+    font-size: 12px;
+  }
+}
+
 
 /* ======================================
    HERO SECTION
 ====================================== */
 
 .hero {
-  background: url('/assets/img/bg-detail.jpg') no-repeat center center fixed;
+  background: url('/assets/img/bg5.jpg') no-repeat center center fixed;
   background-size: cover;
   padding-top: 140px;
   padding-bottom: 60px;
-  min-height: 60vh;
+  min-height: 70vh;
   color: white;
   text-align: center;
   position: relative;
@@ -207,7 +220,7 @@
 }
 
 .kategori-btn {
-  background-color: white;
+  background-color: blac;
   border: 1px solid #dee2e6;
   border-radius: 6px;
   padding: 10px 20px;
@@ -244,6 +257,33 @@
 .subkategori-link:hover {
   background-color: #4d4a4a;
 }
+
+/* BTN LIHAT SEMUA BUKU */
+/* 
+:root {
+  --brown: #8B4513; Warna utama
+  --brown-hover: #A0522D; Warna saat hover
+}
+
+Tombol outline coklat
+.btn-outline-brown {
+  color: var(--brown);
+  border: 2px solid var(--brown);
+  background-color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-outline-brown:hover,
+.btn-outline-brown:focus {
+  background-color: var(--brown);
+  color: white;
+} */ */
 
 
 /* ======================================

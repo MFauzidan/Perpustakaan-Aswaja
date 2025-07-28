@@ -15,7 +15,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- Favicons -->
-    <link href="/assets/img/logo.jpg" rel="icon" >
+    <!-- <link href="/assets/img/logo1.png" rel="icon" > -->
+    <!-- <link rel="icon" href="{{ asset('assets/img/logo1.png') }}" type="image"> -->
+    <link rel="icon" href="{{ asset('assets/img/logo1.png') }}" type="image/png">
+
 
     <link href="{{ asset('css/homepage.css') }}" rel="stylesheet">
     <style>
@@ -31,8 +34,13 @@
     <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-2 px-md-3">
 
         <a class="navbar-brand mb-0 h1 d-flex align-items-center text-truncate" href="#" style="max-width: 75%;">
-            <img src="/assets/img/logo.jpg" alt="Logo" class="navbar-logo">
-            <span class="fw-bold ms-2 library-name">Perpustakaan Pesantren Pelajar Mahasiswa Aswaja Nusantara PPM-AN</span>
+            <!-- <img src="/assets/img/logo1.png" alt="Logo" class="navbar-logo"> -->
+            <img src="{{ asset('assets/img/logo1.png') }}" alt="Logo" class="navbar-logo">
+            <div>
+                <div class="library-title">PERPUSTAKAAN PPM-AN</div>
+                <div class="library-subtitle">Pesantren Pelajar Mahasiswa Aswaja Nusantara</div>
+            </div>
+            <!-- <span class="fw-bold ms-1 library-name">Pesantren Pelajar Mahasiswa Aswaja Nusantara</span> -->
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
@@ -51,11 +59,13 @@
 </nav>
 
 
+<!-- KATEGORI BUKU -->
+
 <section class="hero text-center">
     <div class="container">
-        <h1 class="mb-2 text-white">Selamat Datang di Perpustakaan Aswaja Nusantara</h1>
-        <p class="lead mb-2 text-white">Temukan buku favoritmu dengan cepat!</p>
-        <p class="text-white mb-4">Perpustakaan ini menyediakan ribuan koleksi buku yang bisa kamu akses dengan mudah.</p>
+        <h1 class="mb-2 text-white fw-bold">Selamat Datang di Perpustakaan Aswaja Nusantara</h1>
+        <p class="lead mb-2 text-white fw-medium">Temukan buku favoritmu dengan cepat!</p>
+        <p class="text-white mb-4 ">Perpustakaan ini menyediakan ribuan koleksi buku yang bisa kamu akses dengan mudah.</p>
 
         {{-- Hapus action dan method, tambahkan ID untuk JavaScript --}}
         <form id="searchForm" class="search-form mb-5">
@@ -96,7 +106,8 @@
         </div>
     </div>
 </section>
-
+ 
+<!-- LIHAT SEMUA BUKU -->
 
 <section id="semuaBukuSection" class="container my-5">
     <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
@@ -104,29 +115,32 @@
         <!-- <button id="resetFilterBtn" class="btn btn-outline-success fw-bold">Lihat Semua Buku</button> -->
          <!-- <a href="{{ route('bukus.index') }}" class="btn btn-outline-success fw-bold" target="_blank">Lihat Semua Buku</a> -->
          <a href="{{ route('bukus.index') }}" class="btn btn-outline-success fw-bold">Lihat Semua Buku</a>
+         
     </div>
 
-    <div id="semuaBukuContainer" class="d-flex flex-wrap gap-3 justify-content-start">
-        {{-- Loop semua buku yang relevan. Tambahkan data-kategori-id, data-subkategori-id, data-judul, dan data-penulis --}}
-        @forelse ($allBooksForFiltering as $buku)
-            <div class="d-flex flex-column align-items-center book-wrapper"
-                 data-kategori-id="{{ $buku->kategori_id }}"
-                 data-subkategori-id="{{ $buku->subkategori_id }}"
-                 data-judul="{{ Str::lower($buku->judul) }}"
-                 data-penulis="{{ Str::lower($buku->penulis) }}">
-                <div class="card book-card shadow border-0 position-relative overflow-hidden">
-                    <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
-                        alt="{{ $buku->judul }}" class="w-100 h-100 book-cover">
+        <div id="semuaBukuContainer" class="d-flex flex-wrap gap-3 justify-content-start">
+            @forelse ($allBooksForFiltering as $buku)
+                <div class="d-flex flex-column align-items-center book-wrapper"
+                    data-kategori-id="{{ $buku->kategori_id }}"
+                    data-subkategori-id="{{ $buku->subkategori_id }}"
+                    data-judul="{{ Str::lower($buku->judul) }}"
+                    data-penulis="{{ Str::lower($buku->penulis) }}">
+                    <div class="card book-card shadow border-0 position-relative overflow-hidden" style="width: 200px; height: 250px;">
+                        <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
+                            alt="{{ $buku->judul }}" class="w-100 h-100 book-cover object-fit-cover">
+                    </div>
+                    <div class="mt-2">
+                        <a href="{{ route('bukus.show', $buku->id) }}" class="btn btn-sm btn-light border shadow">Detail</a>
+                    </div>
                 </div>
-                <div class="mt-2">
-                    <a href="{{ route('bukus.show', $buku->id) }}" class="btn btn-sm btn-light border shadow">Detail</a>
+            @empty
+                <div class="col-12">
+                    <p class="text-muted">Tidak ada buku ditemukan.</p>
                 </div>
-            </div>
-        @empty
-            <!-- {{-- Ini akan ditampilkan jika $allBooksForFiltering kosong dari controller --}} -->
-            <p class="text-muted" id="noInitialBooksMessage">Tidak ada buku ditemukan.</p>
-        @endforelse
-    </div>
+            @endforelse
+        </div>
+    </section>
+
     <!-- <div id="noFilteredBooksMessage" class="text-muted mt-3 hidden">Tidak ada buku yang cocok dengan filter Anda.</div> -->
 </section>
 
@@ -140,15 +154,16 @@
                 Urutkan
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item sort-item" data-sort="terbaru">Terbaru</a></li>
-                <li><a class="dropdown-item sort-item" data-sort="terlama">Terlama</a></li>
+                <li><button type="button" class="dropdown-item sort-item" data-sort="terbaru">Terbaru</button></li>
+                <li><button type="button" class="dropdown-item sort-item" data-sort="terlama">Terlama</button></li>
             </ul>
         </div>
     </div>
 
+
     <div class="scroll-horizontal d-flex py-2 px-1 gap-3" id="bukuTerbaruContainer">
         @forelse ($bukuTerbaruUntukJS as $buku)
-            <div class="d-flex flex-column align-items-center book-wrapper" data-timestamp="{{ $buku->created_at->timestamp }}">
+            <div class="d-flex flex-column align-items-center book-wrapper" data-timestamp="{{ \Carbon\Carbon::parse($buku->created_at)->timestamp }}">
                 <div class="card book-card shadow border-0">
                     <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
                         alt="{{ $buku->judul }}" class="w-100 h-100 book-cover">
@@ -194,33 +209,33 @@
     document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams(window.location.search);
 
-        // --- Variabel & Elemen DOM untuk "Lihat Semua Buku" ---
+        // Elemen-elemen untuk SEMUA BUKU
         const searchForm = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
         const subkategoriLinks = document.querySelectorAll('.subkategori-link');
         const semuaBukuContainer = document.getElementById('semuaBukuContainer');
-        const allBookWrappers = Array.from(semuaBukuContainer.querySelectorAll('.book-wrapper')); // Ambil semua buku di DOM
+        const allBookWrappers = semuaBukuContainer ? Array.from(semuaBukuContainer.querySelectorAll('.book-wrapper')) : [];
         const resetFilterBtn = document.getElementById('resetFilterBtn');
         const noFilteredBooksMessage = document.getElementById('noFilteredBooksMessage');
         const noInitialBooksMessage = document.getElementById('noInitialBooksMessage');
 
-
-        // Fungsi untuk memfilter dan menampilkan buku
         function filterAndDisplayBooks(filterQuery = '', filterSubkategoriId = null) {
+            if (!semuaBukuContainer) return;
+
             let foundBooks = 0;
             const lowerCaseQuery = filterQuery.toLowerCase().trim();
 
             allBookWrappers.forEach(buku => {
-                const bukuJudul = buku.dataset.judul;
-                const bukuPenulis = buku.dataset.penulis;
-                const bukuSubkategoriId = buku.dataset.subkategoriId;
+                const bukuJudul = buku.dataset.judul || '';
+                const bukuPenulis = buku.dataset.penulis || '';
+                const bukuSubkategoriId = buku.dataset.subkategoriId || '';
 
                 const matchesQuery = lowerCaseQuery === '' ||
-                                     bukuJudul.includes(lowerCaseQuery) ||
-                                     bukuPenulis.includes(lowerCaseQuery);
+                    bukuJudul.includes(lowerCaseQuery) ||
+                    bukuPenulis.includes(lowerCaseQuery);
 
                 const matchesSubkategori = filterSubkategoriId === null ||
-                                           bukuSubkategoriId === String(filterSubkategoriId); // Pastikan perbandingan string
+                    bukuSubkategoriId === String(filterSubkategoriId);
 
                 if (matchesQuery && matchesSubkategori) {
                     buku.classList.remove('hidden');
@@ -230,127 +245,118 @@
                 }
             });
 
-            // Tampilkan atau sembunyikan pesan "Tidak ada buku yang cocok"
-            if (foundBooks === 0) {
-                noFilteredBooksMessage.classList.remove('hidden');
-            } else {
-                noFilteredBooksMessage.classList.add('hidden');
+            if (noFilteredBooksMessage) {
+                noFilteredBooksMessage.classList.toggle('hidden', foundBooks !== 0);
             }
-
-            // Sembunyikan pesan "Tidak ada buku ditemukan." jika ada buku yang difilter
             if (noInitialBooksMessage) {
-                if (foundBooks > 0 || (filterQuery !== '' || filterSubkategoriId !== null)) {
-                    noInitialBooksMessage.classList.add('hidden');
-                } else {
-                    noInitialBooksMessage.classList.remove('hidden');
-                }
+                const hideMessage = foundBooks > 0 || (filterQuery !== '' || filterSubkategoriId !== null);
+                noInitialBooksMessage.classList.toggle('hidden', hideMessage);
             }
 
-            // Scroll ke section semua buku setelah filter diterapkan
             const section = document.getElementById('semuaBukuSection');
             if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                section.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
 
-        // Event Listener untuk Form Pencarian
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah reload halaman
-            const query = searchInput.value;
-            filterAndDisplayBooks(query);
-            // Opsional: perbarui URL tanpa reload
-            history.pushState(null, '', `?query=${encodeURIComponent(query)}#semuaBukuSection`);
-        });
+        if (searchForm) {
+            searchForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const query = searchInput.value;
+                filterAndDisplayBooks(query);
+                // history.pushState(null, '', `?query=${encodeURIComponent(query)}#semuaBukuSection`);
+            });
+        }
 
-        // Event Listener untuk Link Subkategori
         subkategoriLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault(); // Mencegah reload halaman
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
                 const subkategoriId = this.dataset.subkategoriId;
-                searchInput.value = ''; // Kosongkan input pencarian saat filter subkategori
-                filterAndDisplayBooks('', subkategoriId); // Filter hanya berdasarkan subkategori
-                // Opsional: perbarui URL tanpa reload
-                history.pushState(null, '', `?subkategori=${subkategoriId}#semuaBukuSection`);
+                if (searchInput) searchInput.value = '';
+                filterAndDisplayBooks('', subkategoriId);
+                // history.pushState(null, '', `?subkategori=${subkategoriId}#semuaBukuSection`);
             });
         });
 
-        // Event Listener untuk Tombol "Lihat Semua Buku" (reset filter)
-        resetFilterBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            searchInput.value = ''; // Kosongkan input pencarian
-            filterAndDisplayBooks(); // Panggil tanpa argumen untuk menampilkan semua buku
-            history.pushState(null, '', `{{ route('home') }}#semuaBukuSection`); // Kembali ke URL home
-        });
+        if (resetFilterBtn) {
+            resetFilterBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (searchInput) searchInput.value = '';
+                filterAndDisplayBooks();
+                // history.pushState(null, '', `{{ route('home') }}#semuaBukuSection`);
+            });
+        }
 
-        // Inisialisasi awal berdasarkan parameter URL saat halaman dimuat
         const initialQuery = params.get('query') || '';
         const initialSubkategori = params.get('subkategori') || null;
         if (initialQuery !== '' || initialSubkategori !== null) {
-            searchInput.value = initialQuery; // Set nilai input pencarian jika ada di URL
+            if (searchInput) searchInput.value = initialQuery;
             filterAndDisplayBooks(initialQuery, initialSubkategori);
         } else {
-            // Tampilkan semua buku jika tidak ada filter awal
             filterAndDisplayBooks();
         }
 
-        // --- Kode JavaScript untuk pengurutan buku terbaru/terlama (yang sudah ada) ---
-        // const sortButtons = document.querySelectorAll('.sort-item');
-        // const bukuTerbaruContainer = document.getElementById('bukuTerbaruContainer');
-        // const dropdownToggleButton = document.querySelector('#bukuTerbaruSection .dropdown-toggle');
+        // -----------------------------------
+        // Fitur Sortir Buku Terbaru/Terlama
+        // -----------------------------------
+        const sortButtons = document.querySelectorAll('.sort-item');
+        const bukuTerbaruContainer = document.getElementById('bukuTerbaruContainer');
+        const dropdownToggleButton = document.querySelector('#bukuTerbaruSection .dropdown-toggle');
+        const bukuTerbaruSection = document.getElementById('bukuTerbaruSection');
 
-        // let bukuItems = Array.from(bukuTerbaruContainer.querySelectorAll('.book-wrapper'));
+        if (bukuTerbaruContainer && sortButtons.length > 0) {
+            let bukuItems = Array.from(bukuTerbaruContainer.querySelectorAll('.book-wrapper'));
 
-        // function sortAndDisplayBooks(order) {
-        //     if (bukuItems.length === 0) {
-        //         bukuTerbaruContainer.innerHTML = '<p class="text-muted">Tidak ada buku ditemukan.</p>';
-        //         return;
-        //     }
+            function sortAndDisplayBooks(order) {
+                if (bukuItems.length === 0) {
+                    bukuTerbaruContainer.innerHTML = '<p class="text-muted">Tidak ada buku ditemukan.</p>';
+                    return;
+                }
 
-        //     if (order === 'terbaru') {
-        //         bukuItems.sort((a, b) => {
-        //             const timestampA = parseInt(a.dataset.timestamp);
-        //             const timestampB = parseInt(b.dataset.timestamp);
-        //             return timestampB - timestampA;
-        //         });
-        //     } else if (order === 'terlama') {
-        //         bukuItems.sort((a, b) => {
-        //             const timestampA = parseInt(a.dataset.timestamp);
-        //             const timestampB = parseInt(b.dataset.timestamp);
-        //             return timestampA - timestampB;
-        //         });
-        //     }
+                if (order === 'terbaru') {
+                    bukuItems.sort((a, b) => parseInt(b.dataset.timestamp) - parseInt(a.dataset.timestamp));
+                } else if (order === 'terlama') {
+                    bukuItems.sort((a, b) => parseInt(a.dataset.timestamp) - parseInt(b.dataset.timestamp));
+                }
 
-        //     bukuTerbaruContainer.innerHTML = '';
-        //     bukuItems.forEach(buku => {
-        //         bukuTerbaruContainer.appendChild(buku);
-        //     });
-        // }
+                bukuTerbaruContainer.innerHTML = '';
+                bukuItems.forEach(buku => {
+                    bukuTerbaruContainer.appendChild(buku);
+                });
 
-        // sortButtons.forEach(button => {
-        //     button.addEventListener('click', function(e) {
-        //         e.preventDefault();
-        //         const sortType = this.dataset.sort;
-        //         if (dropdownToggleButton) {
-        //             dropdownToggleButton.textContent = sortType === 'terbaru' ? 'Terbaru' : 'Terlama';
-        //         }
-        //         sortAndDisplayBooks(sortType);
-        //     });
-        // });
+                // if (bukuTerbaruSection) {
+                //     bukuTerbaruSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // }
+            }
 
-        // const initialSort = params.get('sort') || 'terbaru';
-        // sortAndDisplayBooks(initialSort);
-        // if (dropdownToggleButton) {
-        //     dropdownToggleButton.textContent = initialSort === 'terbaru' ? 'Terbaru' : 'Terlama';
-        // }
+            sortButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sortType = this.dataset.sort;
+                    if (dropdownToggleButton) {
+                        dropdownToggleButton.textContent = sortType === 'terbaru' ? 'Terbaru' : 'Terlama';
+                    }
 
-        // if (params.get('sort') && !window.location.hash) {
-        //     const terbaruSection = document.getElementById('bukuTerbaruSection');
-        //     if (terbaruSection) {
-        //         terbaruSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        //     }
-        // }
+                    sortAndDisplayBooks(sortType);
+
+                    const currentParams = new URLSearchParams(window.location.search);
+                    currentParams.set('sort', sortType);
+                    // history.pushState(null, '', '?' + currentParams.toString() + '#bukuTerbaruSection');
+                });
+            });
+
+            const initialSort = params.get('sort');
+            if (initialSort === 'terbaru' || initialSort === 'terlama') {
+                sortAndDisplayBooks(initialSort);
+                if (dropdownToggleButton) {
+                    dropdownToggleButton.textContent = initialSort === 'terbaru' ? 'Terbaru' : 'Terlama';
+                }
+            }
+        }
     });
 </script>
+
+
 
 </body>
 </html>
