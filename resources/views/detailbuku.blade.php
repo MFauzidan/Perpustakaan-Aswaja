@@ -18,31 +18,29 @@
   <link href="{{ asset('css/detailbuku.css') }}" rel="stylesheet">
 </head>
 <body>
-  <div class="overlay">
-    <div class="row g-5 align-items-start">
-      <div class="col-md-6 text-center">
-        <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" class="book-image">
-      </div>
-      <div class="col-md-6">
-        <h2>{{ $buku->judul }}</h2>
-          <p><strong>Penulis:</strong> {{ $buku->penulis }}</p>
-          <p><strong>Penerbit:</strong> {{ $buku->penerbit }}</p>
-          <p><strong>Tahun Terbit:</strong> {{ $buku->tahun_terbit }}</p>
-          <p><strong>Jumlah Halaman:</strong> {{ $buku->jumlah_halaman }} halaman</p>
-          <p><strong>Kategori:</strong> {{ $buku->kategori->nama }}</p>
-          <p><strong>Lokasi Rak:</strong> {{ $buku->kode_penempatan }}</p>
-          <p><strong>Stok Tersedia:</strong> {{ $buku->jumlah_asli }} dari {{ $buku->jumlah_sekarang }} buku</p>
+<div class="overlay">
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-md-6 text-center">
+      <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" class="book-image">
+    </div>
+    <div class="col-12 col-md-6">
+      <h2>{{ $buku->judul }}</h2>
+      <p><strong>Penulis:</strong> {{ $buku->penulis }}</p>
+      <p><strong>Penerbit:</strong> {{ $buku->penerbit }}</p>
+      <p><strong>Tahun Terbit:</strong> {{ $buku->tahun_terbit }}</p>
+      <p><strong>Jumlah Halaman:</strong> {{ $buku->jumlah_halaman }} halaman</p>
+      <p><strong>Kategori:</strong> {{ $buku->kategori->nama }}</p>
+      <p><strong>Lokasi Rak:</strong> {{ $buku->kode_penempatan }}</p>
+      <p><strong>Stok Tersedia:</strong> {{ $buku->jumlah_asli }} dari {{ $buku->jumlah_sekarang }} buku</p>
 
+      <hr>
+      <h5>Sinopsis:</h5>
+      <div class="sinopsis-detail">{!! $buku->sinopsis !!}</div>
 
-
-
-        <hr>
-        <h5>Sinopsis:</h5>
-        <div class="sinopsis-detail">{!! $buku->sinopsis !!}</div>
-
-        <a href="{{ url()->previous() }}" class="btn btn-outline-light mt-4">← Kembali</a>
-      </div>
+      <a href="{{ url()->previous() }}" class="btn btn-outline-light mt-4">← Kembali</a>
     </div>
   </div>
+</div>
+
 </body>
 </html>

@@ -89,3 +89,38 @@ p {
     background: #3c7c66;
     color: #fff;
 }
+
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+    background-size: cover;
+    align-items: flex-start;
+  }
+
+  .overlay {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .book-image {
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .sinopsis-detail {
+    max-width: 100%;
+  }
+
+  .btn-outline-light {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
