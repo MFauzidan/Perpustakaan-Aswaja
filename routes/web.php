@@ -3,25 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KategoriController; // Pastikan controller ini ada jika Anda menggunakannya
 
-// Homepage — dengan filter GET (search, kategori, subkategori)
+// Halaman Beranda - Menangani filter pencarian, kategori, dan subkategori melalui parameter GET
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 
-// Semua Buku — dengan filter GET (search)
-Route::get('/buku', [BukuController::class, 'index'])->name('bukus.index');
+// Halaman Semua Buku - Menampilkan semua buku, bisa juga menangani pencarian/sortir sendiri jika diimplementasikan di BukuController@index
+Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
 
-// Detail buku
-Route::get('/bukus/{id}', [BukuController::class, 'show'])->name('bukus.show');
+// Halaman Detail Buku Individual
+Route::get('/bukus/{buku}', [BukuController::class, 'show'])->name('buku.show'); // Mengasumsikan {buku} adalah route model binding
 
-// Kategori — jika ada halaman kategori terpisah
+// Opsional: Halaman Kategori - Hanya jika Anda memiliki halaman khusus untuk kategori
+// Jika halaman ini tidak digunakan atau kategori hanya berfungsi sebagai dropdown di halaman beranda, Anda bisa menghapusnya.
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
 
-// 🔴 Hapus AJAX search: sudah tidak dipakai
-// Route::get('/api/buku/search', [BukuController::class, 'ajaxSearch'])->name('ajax.search');
-
-// 🔴 Hapus subkategori AJAX: pakai GET param di /
-Route::get('/buku/subkategori/{id}', [BukuController::class, 'bysubkategori'])->name('buku.bysubkategori'); 
-// 🟢 Jika subkategori via param GET, route ini TIDAK DIPAKAI, jadi bisa DIHAPUS
-
-// ✅ Saran: hapus jika `bysubkategori` tidak ada di controller.

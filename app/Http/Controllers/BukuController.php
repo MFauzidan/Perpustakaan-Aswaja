@@ -10,34 +10,38 @@ class BukuController extends Controller
 {
     /**
      * Halaman daftar semua buku.
-     * Mendukung filter pencarian dan filter subkategori.
+     * Mendukung filter pencarian (judul/penulis) dan filter subkategori.
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $subkategori = $request->input('subkategori');
+        // Ambil parameter dari URL
+        $search = $request->input('search'); // Gunakan 'search' sebagai nama parameter
+        $subkategori = $request->input('subkategori'); // Gunakan 'subkategori' sebagai nama parameter
 
+        // Mulai query builder untuk model Buku
         $query = Buku::query();
 
-        // Filter pencarian judul atau penulis
-        if ($search) {
+        // Terapkan filter pencarian jika ada
+        if (!empty($search)) {
             $query->where(function($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
                   ->orWhere('penulis', 'like', "%{$search}%");
             });
         }
 
-        // Filter berdasarkan subkategori
-        if ($subkategori) {
+        // Terapkan filter subkategori jika ada
+        if (!empty($subkategori)) { // Menggunakan !empty() untuk memeriksa nilai null atau string kosong
             $query->where('subkategori_id', $subkategori);
         }
 
-        // Paginate 12 buku per halaman
-        $bukus = $query->orderBy('judul')->paginate(12);
+        // Urutkan dan paginasi hasilnya
+        $bukus = $query->orderBy('judul', 'asc')->paginate(12); // Default sortir berdasarkan judul
 
-        // Ambil kategori + subkategorinya untuk dropdown
+        // Ambil semua kategori dan subkategorinya untuk dropdown filter
         $kategoris = Kategori::with('subkategoris')->get();
 
+        // Sekarang, kita hanya mengembalikan data yang sudah difilter/dipaginasi oleh Controller.
+        // Variabel $allBooksForFiltering tidak lagi diperlukan karena filtering dilakukan di server.
         return view('buku', compact('bukus', 'search', 'subkategori', 'kategoris'));
     }
 
@@ -47,7 +51,6 @@ class BukuController extends Controller
     public function show($id)
     {
         $buku = Buku::with('kategori')->findOrFail($id);
-
         return view('detailbuku', compact('buku'));
     }
-}
+}   
