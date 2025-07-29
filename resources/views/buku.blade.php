@@ -13,18 +13,19 @@
 
     <link href="{{ asset('css/buku.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ asset('assets/img/logo1.png') }}" type="image/png">
-  
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3">
         <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-2 px-md-3">
-            <a class="navbar-brand mb-0 h1 d-flex align-items-center text-truncate" href="{{ route('home') }}" style="max-width: 75%;">
-                <img src="{{ asset('assets/img/logo1.png') }}" alt="Logo" class="navbar-logo">
-                <div>
-                    <div class="library-title">PERPUSTAKAAN PPM-AN</div>
-                    <div class="library-subtitle">Pesantren Pelajar Mahasiswa Aswaja Nusantara</div>
+           <a class="navbar-brand mb-0 h1 d-flex flex-row align-items-center text-truncate gap-2" href="{{ route('home') }}" style="max-width: 100%;">
+                <img src="{{ asset('assets/img/logo1.png') }}" alt="Logo" class="navbar-logo" style="height: 40px;">
+                <div class="text-start">
+                    <div class="library-title fw-bold" style="font-size: 0.9rem;">PERPUSTAKAAN PPM-AN</div>
+                    <div class="library-subtitle" style="font-size: 0.7rem;">Pesantren Pelajar Mahasiswa Aswaja Nusantara</div>
                 </div>
             </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
                 <span class="navbar-toggler-icon"></span>
             </button>

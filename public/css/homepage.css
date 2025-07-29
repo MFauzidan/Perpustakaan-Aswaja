@@ -354,15 +354,15 @@ Tombol outline coklat
     align-items: flex-start !important;
     gap: 0.3rem;
   }
-
-  .library-title {
-    font-size: 16px;
-    font-weight: 600;
+  .navbar-logo {
+    height: 36px;
+    margin-right: 8px;
   }
-
+  .library-title {
+    font-size: 0.85rem;
+  }
   .library-subtitle {
-    font-size: 12px;
-    white-space: normal;
+    font-size: 0.7rem;
   }
 
   /* Hero Section */
