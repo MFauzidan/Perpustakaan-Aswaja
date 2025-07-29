@@ -12,7 +12,7 @@ class homepageController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query', '');
-        $subkategoriDipilih = $request->input('subkategori', null);
+        $subkategoriDipilih = $request->input('subkategori');
         $sortOrderAllBooks = $request->input('sort_all_books', 'desc'); // Default 'desc' untuk semua buku
         $sortOrderNewBooks = $request->input('sort_new_books', 'desc'); // Default 'desc' untuk buku terbaru
 

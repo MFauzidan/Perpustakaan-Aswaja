@@ -142,9 +142,6 @@
                     <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
                         alt="{{ $buku->judul }}" class="w-100 h-100 book-cover">
                 </div>
-                <div class="mt-2">
-                    <a href="{{ route('buku.show', $buku->id) }}" class="btn btn-sm btn-light border shadow">Detail</a>
-                </div>
             </div>
         @empty
             <p class="text-muted">Tidak ada buku terbaru ditemukan.</p>
