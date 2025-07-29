@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="kategori-wrapper d-flex gap-3 justify-content-center">
+        <div class="kategori-wrapper d-flex flex-wrap gap-3 justify-content-center">
             @foreach ($kategoris as $kategori)
                 <div class="dropdown-kategori position-relative">
                     <button type="button" class="kategori-btn">
@@ -95,7 +95,7 @@
         </div>
     </div>
 </section>
- 
+
 <section id="semuaBukuSection" class="container my-5">
     <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
                 <a href="{{ route('buku.index') }}" class="btn btn-outline-success fw-bold">Lihat Semua Buku</a>

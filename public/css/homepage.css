@@ -259,7 +259,7 @@
 }
 
 /* BTN LIHAT SEMUA BUKU */
-/* 
+/*
 :root {
   --brown: #8B4513; Warna utama
   --brown-hover: #A0522D; Warna saat hover
@@ -343,4 +343,86 @@ Tombol outline coklat
 .footer .credits {
   font-size: 13px;
   padding-top: 5px;
+}
+
+/* ========== RESPONSIVE SECTION TAMBAHAN ========== */
+
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar-brand {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.3rem;
+  }
+
+  .library-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .library-subtitle {
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  /* Hero Section */
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+  }
+
+  /* Kategori Section */
+  .kategori-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 10px;
+  }
+
+  .kategori-btn {
+    width: 100%;
+  }
+
+  .dropdown-subkategori {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* Buku Wrapper */
+  .book-wrapper {
+    width: 100% !important;
+  }
+
+  .book-card {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .scroll-horizontal {
+    flex-direction: column;
+    overflow-x: unset;
+  }
+
+  /* Footer */
+  .footer h3 {
+    font-size: 22px;
+  }
+
+  .footer p, .footer .credits {
+    font-size: 12px;
+  }
+
+  .footer .social-links {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .footer .social-links a {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
 }
