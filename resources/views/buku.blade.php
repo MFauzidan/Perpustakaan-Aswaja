@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,17 +11,17 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="/assets/img/logo.jpg" rel="icon" alt="Logo">
+    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <link href="{{ asset('css/buku.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ asset('assets/img/logo1.png') }}" type="image/png">
-  
+    <link href="{{ asset('css/buku.css') }}" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3">
         <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-2 px-md-3">
+
             <a class="navbar-brand mb-0 h1 d-flex align-items-center text-truncate" href="{{ route('home') }}" style="max-width: 75%;">
                 <img src="{{ asset('assets/img/logo1.png') }}" alt="Logo" class="navbar-logo">
                 <div>
@@ -25,9 +29,11 @@
                     <div class="library-subtitle">Pesantren Pelajar Mahasiswa Aswaja Nusantara</div>
                 </div>
             </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto w-100 justify-content-end text-end mt-2 mt-lg-0">
                     <li class="nav-item"><a class="nav-link" href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram fa-lg"></i></a></li>
@@ -35,6 +41,7 @@
                     <li class="nav-item"><a class="nav-link" href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook fa-lg"></i></a></li>
                 </ul>
             </div>
+
         </div>
     </nav>
 
@@ -43,15 +50,18 @@
             <h1 class="mb-2 text-white fw-semibold">DAFTAR SEMUA BUKU</h1>
             <p class="lead mb-2 text-white fw-medium">Temukan buku favoritmu dengan cepat!</p>
 
-            <form id="searchForm" class="search-form mb-5" action="{{ route('buku.index') }}" method="GET">
-                <input name="search" id="searchInput" class="form-control search-input" type="search"
-                       placeholder="Cari Buku Anda: Penulis, Judul, ..."
-                       value="{{ $search }}"> {{-- Mempertahankan nilai pencarian --}}
-                @if($subkategori) {{-- Mempertahankan filter subkategori jika ada --}}
-                    <input type="hidden" name="subkategori" value="{{ $subkategori }}">
-                @endif
-                <button class="btn search-btn" type="submit">Search</button>
-            </form>
+        <form id="searchForm" class="search-form mb-5" action="{{ route('home') }}" method="GET">
+            <input name="query" id="searchInput" class="form-control search-input" type="search"
+                   placeholder="Cari Buku Anda: Penulis, Judul,..."
+                   value="{{ $query }}">
+            {{-- Tambahkan ID untuk hidden input agar mudah diakses JavaScript --}}
+            {{-- Pastikan input ini selalu ada, meskipun nilainya kosong --}}
+            <input type="hidden" name="subkategori" id="hiddenSubkategori" value="{{ $subkategoriDipilih ?? '' }}">
+            <input type="hidden" name="sort_all_books" id="hiddenSortAllBooks" value="{{ $sortOrderAllBooks ?? 'desc' }}">
+            <input type="hidden" name="sort_new_books" id="hiddenSortNewBooks" value="{{ $sortOrderNewBooks ?? 'desc' }}">
+
+            <button class="btn search-btn" type="submit">Search</button>
+        </form>
 
             <div class="row align-items-center justify-content-between mb-3 px-2">
                 <div class="col-auto">
@@ -71,8 +81,8 @@
                             <div class="dropdown-subkategori">
                                 @foreach ($kategori->subkategoris as $subkategoriItem) {{-- Menggunakan nama yang berbeda agar tidak bentrok dengan variabel $subkategori dari request --}}
                                     {{-- Link subkategori akan mengirimkan GET request ke BukuController@index --}}
-                                    <a href="{{ route('buku.index', ['subkategori' => $subkategoriItem->id, 'search' => $search]) }}#semuaBukuSection"
-                                       class="subkategori-link">
+                                    <a href="{{ route('buku.index', ['subkategori' => $subkategoriItem->id, 'query' => $query]) }}"
+                                       class="subkategori-link" data-subkategori-id="{{ $subkategoriItem->id }}">
                                         {{ ucfirst($subkategoriItem->nama) }}
                                     </a>
                                 @endforeach
@@ -99,7 +109,7 @@
     <div class="container">
         <section id="semuaBukuSection">
             <div id="semuaBukuContainer" class="d-flex flex-wrap gap-3 justify-content-start">
-                @forelse ($bukus as $buku) {{-- Menggunakan $bukus dari paginasi --}}
+                @forelse ($allBooks as $buku) {{-- Menggunakan $bukus dari paginasi --}}
                     <div class="d-flex flex-column align-items-center book-wrapper">
                         <div class="card book-card shadow border-0 position-relative overflow-hidden" style="width: 200px; height: 250px;">
                             <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
@@ -118,8 +128,9 @@
         </section>
 
         <div class="mt-4">
-            {{ $bukus->withQueryString()->links() }}
+            {{ $allBooks->withQueryString()->links() }} <!-- ✅ sesuai dengan yang digunakan di atas -->
         </div>
+
     </div>
 
     <footer id="footer" class="footer bg-dark text-white py-5">
@@ -144,39 +155,160 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Logika untuk toggle dropdown kategori (visual saja)
-            const dropdownKategoris = document.querySelectorAll('.dropdown-kategori');
-            dropdownKategoris.forEach(dropdown => {
-                const button = dropdown.querySelector('.kategori-btn');
-                const subkategoriMenu = dropdown.querySelector('.dropdown-subkategori');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
 
-                if (button && subkategoriMenu) {
-                    button.addEventListener('click', function() {
-                        subkategoriMenu.classList.toggle('active');
-                    });
+        // --- Fungsi untuk merender HTML dari data buku (JSON) ---
+        function renderBooks(books, containerId, isNewBooksSection = false) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
-                    document.addEventListener('click', function(event) {
-                        if (!dropdown.contains(event.target)) {
-                            subkategoriMenu.classList.remove('active');
-                        }
-                    });
-                }
-            });
+            let html = '';
+            if (books.length === 0) {
+                html = isNewBooksSection ? '<p class="text-muted">Tidak ada buku terbaru ditemukan.</p>' :
+                                           '<div class="col-12"><p class="text-muted">Tidak ada buku ditemukan.</p></div>';
+            } else {
+                books.forEach(buku => {
+                    const imageUrl = buku.gambar ? `{{ asset('storage') }}/${buku.gambar}` : 'https://via.placeholder.com/200x150?text=No+Image';
+                    if (isNewBooksSection) {
+                        html += `
+                            <div class="d-flex flex-column align-items-center book-wrapper">
+                                <div class="card book-card shadow border-0">
+                                    <img src="${imageUrl}" alt="${buku.judul}" class="w-100 h-100 book-cover">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="d-flex flex-column align-items-center book-wrapper">
+                                <div class="card book-card shadow border-0 position-relative overflow-hidden" style="width: 200px; height: 250px;">
+                                    <img src="${imageUrl}" alt="${buku.judul}" class="w-100 h-100 book-cover object-fit-cover">
+                                </div>
+                                <div class="mt-2">
+                                    <a href="{{ url('buku') }}/${buku.id}" class="btn btn-sm btn-light border shadow">Detail</a>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            container.innerHTML = html;
+        }
 
-            // Optional: Scroll ke bagian buku jika ada parameter filter
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('search') || params.has('subkategori')) {
-                const section = document.getElementById('semuaBukuSection');
-                if (section) {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // --- Fungsi untuk mengirim permintaan AJAX dan memperbarui DOM ---
+        async function fetchBooksAndUpdate(params) {
+            // Dapatkan semua parameter hidden dari form search
+            const searchForm = document.getElementById('searchForm');
+            const formData = new FormData(searchForm);
+            const currentParams = new URLSearchParams();
+            for (let pair of formData.entries()) { 
+                currentParams.append(pair[0], pair[1]);
+            }
+
+            // Gabungkan dengan parameter baru yang dikirimkan
+            for (const key in params) { 
+                if (params[key] !== null) { 
+                    currentParams.set(key, params[key]);
+                } else {
+                    currentParams.delete(key); 
                 }
             }
 
+            // Buat URL dengan parameter query
+            const url = `{{ route('home') }}?${currentParams.toString()}`;
 
+            try {
+                // Tampilkan loading indicator jika diperlukan
+                // const loadingSpinner = document.getElementById('loadingSpinner');
+                // if (loadingSpinner) loadingSpinner.style.display = 'block';
+
+                const response = await fetch(url, { 
+                    headers: { 
+                        'X-Requested-With': 'XMLHttpRequest' 
+                    }
+                });
+
+                if (!response.ok) { 
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json(); // Ambil respons sebagai JSON (bukan HTML)
+
+                // Render dan perbarui konten "Semua Buku"
+                renderBooks(data.allBooks, 'semuaBukuContainer', false);
+
+                // Render dan perbarui konten "Buku Terbaru"
+                renderBooks(data.bukuTerbaru, 'bukuTerbaruContainer', true);
+
+                // Perbarui teks tombol Urutkan di bagian Buku Terbaru
+                const sortNewBooksButton = document.getElementById('sortNewBooksButton');
+                if (sortNewBooksButton) {
+                    sortNewBooksButton.textContent = 'Urutkan: ' + data.sortOrderNewBooksText; 
+                }
+
+                // Update nilai hidden input di form search agar sesuai dengan state terbaru
+                document.getElementById('searchInput').value = currentParams.get('query') || '';
+                document.getElementById('hiddenSubkategori').value = currentParams.get('subkategori') || '';
+                document.getElementById('hiddenSortAllBooks').value = currentParams.get('sort_all_books') || 'desc';
+                document.getElementById('hiddenSortNewBooks').value = currentParams.get('sort_new_books') || 'desc';
+
+                // Opsional: Perbarui URL di address bar tanpa reload (untuk bookmarking & back/forward button)
+                // const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${currentParams.toString()}`;
+                // history.pushState({ path: newUrl }, '', newUrl);
+
+
+            } catch (error) { 
+                console.error('Error fetching books:', error);
+                // Tampilkan pesan error ke pengguna di UI jika diperlukan
+            } finally {
+                // Sembunyikan loading indicator
+                // const loadingSpinner = document.getElementById('loadingSpinner');
+                // if (loadingSpinner) loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // --- Logika Search Form ---
+        const searchForm = document.getElementById('searchForm');
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah reload halaman
+            const query = document.getElementById('searchInput').value;
+            fetchBooksAndUpdate({ query: query, subkategori: null }); // Reset subkategori saat search baru
         });
-    </script>
+
+        // --- Logika Dropdown Kategori & Subkategori ---
+        const dropdownKategoris = document.querySelectorAll('.dropdown-kategori');
+        dropdownKategoris.forEach(dropdown => {
+            const button = dropdown.querySelector('.kategori-btn');
+            const subkategoriMenu = dropdown.querySelector('.dropdown-subkategori');
+
+            if (button && subkategoriMenu) {
+                button.addEventListener('click', function() {
+                    subkategoriMenu.classList.toggle('active');
+                });
+
+                // Klik di luar dropdown untuk menutup
+                document.addEventListener('click', function(event) {
+                    if (!dropdown.contains(event.target)) {
+                        subkategoriMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Event listener untuk link subkategori
+            const subkategoriLinks = dropdown.querySelectorAll('.subkategori-link');
+            subkategoriLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah reload halaman
+                    const subkategoriId = event.target.dataset.subkategoriId; // Ambil ID dari data-atribut
+                    fetchBooksAndUpdate({ subkategori: subkategoriId, query: null }); // Reset query saat filter subkategori
+                    subkategoriMenu.classList.remove('active'); // Tutup dropdown setelah klik
+                });
+            });
+        });
+    });
+
+</script>
 
 </body>
 </html>

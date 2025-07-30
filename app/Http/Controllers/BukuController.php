@@ -15,35 +15,55 @@ class BukuController extends Controller
     public function index(Request $request)
     {
         // Ambil parameter dari URL
-        $search = $request->input('search'); // Gunakan 'search' sebagai nama parameter
-        $subkategori = $request->input('subkategori'); // Gunakan 'subkategori' sebagai nama parameter
+        $query = $request->input('query', ''); // ← pakai 'search' sesuai form
+        $subkategori = $request->input('subkategori');
 
-        // Mulai query builder untuk model Buku
-        $query = Buku::query();
+        $kategoris = Kategori::with('subkategoris')->get();
 
-        // Terapkan filter pencarian jika ada
-        if (!empty($search)) {
-            $query->where(function($q) use ($search) {
-                $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('penulis', 'like', "%{$search}%");
+        // Gunakan nama variabel lain untuk query builder
+        // $bukuQuery = Buku::query();
+                $allBooksQuery = Buku::query();
+
+
+        // Filter pencarian
+        if (!empty($query)) {
+            $allBooksQuery->where(function($q) use ($query) {
+                $q->where('judul', 'like', '%' . $query . '%')
+                  ->orWhere('penulis', 'like', '%' . $query . '%');
             });
         }
 
-        // Terapkan filter subkategori jika ada
-        if (!empty($subkategori)) { // Menggunakan !empty() untuk memeriksa nilai null atau string kosong
-            $query->where('subkategori_id', $subkategori);
+        // Filter subkategori
+        if (!empty($subkategori)) {
+            $allBooksQuery->where('subkategori_id', $subkategori);
         }
 
-        // Urutkan dan paginasi hasilnya
-        $bukus = $query->orderBy('judul', 'asc')->paginate(12); // Default sortir berdasarkan judul
+        // Sorting dan pagination
+        // $bukus = $allBooksQuery->orderBy('judul', 'asc')->paginate(12);
+        
+        $allBooks = $allBooksQuery->select('id', 'judul', 'penulis', 'gambar', 'kategori_id', 'subkategori_id', 'created_at')
+                                ->paginate(12)
+                                ->withQueryString();
 
-        // Ambil semua kategori dan subkategorinya untuk dropdown filter
-        $kategoris = Kategori::with('subkategoris')->get();
+        // Ajax JSON response
+        if ($request->ajax()) {
+            return response()->json([
+                'allBooks' => $allBooks->items(),
+                'pagination' => (string) $allBooks->links(),
+                'query' => $query,
+                'subkategori' => $subkategori
+            ]);
+        }
 
-        // Sekarang, kita hanya mengembalikan data yang sudah difilter/dipaginasi oleh Controller.
-        // Variabel $allBooksForFiltering tidak lagi diperlukan karena filtering dilakukan di server.
-        return view('buku', compact('bukus', 'search', 'subkategori', 'kategoris'));
+        // Return ke view
+        return view('buku', compact(
+            'allBooks',
+            'query',
+            'subkategori',
+            'kategoris'
+        ));
     }
+
 
     /**
      * Detail buku.
@@ -53,4 +73,4 @@ class BukuController extends Controller
         $buku = Buku::with('kategori')->findOrFail($id);
         return view('detailbuku', compact('buku'));
     }
-}   
+}

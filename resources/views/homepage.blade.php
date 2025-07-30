@@ -11,13 +11,12 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <link rel="icon" href="{{ asset('assets/img/logo1.png') }}" type="image/png">
     <link href="{{ asset('css/homepage.css') }}" rel="stylesheet">
-    <!-- {{-- Memastikan link ke custom.css sudah ada --}} -->
-       <!-- <link href="{{ asset('css/homepage.css') }}" rel="stylesheet"> -->
 </head>
 <body>
 
@@ -58,11 +57,11 @@
             <input name="query" id="searchInput" class="form-control search-input" type="search"
                    placeholder="Cari Buku Anda: Penulis, Judul,..."
                    value="{{ $query }}">
-            @if($subkategoriDipilih)
-                <input type="hidden" name="subkategori" value="{{ $subkategoriDipilih }}">
-            @endif
-            <input type="hidden" name="sort_all_books" value="{{ $sortOrderAllBooks ?? 'desc' }}">
-            <input type="hidden" name="sort_new_books" value="{{ $sortOrderNewBooks ?? 'desc' }}">
+            {{-- Tambahkan ID untuk hidden input agar mudah diakses JavaScript --}}
+            {{-- Pastikan input ini selalu ada, meskipun nilainya kosong --}}
+            <input type="hidden" name="subkategori" id="hiddenSubkategori" value="{{ $subkategoriDipilih ?? '' }}">
+            <input type="hidden" name="sort_all_books" id="hiddenSortAllBooks" value="{{ $sortOrderAllBooks ?? 'desc' }}">
+            <input type="hidden" name="sort_new_books" id="hiddenSortNewBooks" value="{{ $sortOrderNewBooks ?? 'desc' }}">
 
             <button class="btn search-btn" type="submit">Search</button>
         </form>
@@ -84,7 +83,8 @@
                     @if ($kategori->subkategoris && $kategori->subkategoris->count() > 0)
                         <div class="dropdown-subkategori">
                             @foreach ($kategori->subkategoris as $subkategori)
-                                <a href="{{ route('home', array_merge(request()->query(), ['subkategori' => $subkategori->id, 'query' => null])) }}" class="subkategori-link">
+                                {{-- Ubah link subkategori untuk AJAX: href="#" dan gunakan data-subkategori-id --}}
+                                <a href="#" data-subkategori-id="{{ $subkategori->id }}" class="subkategori-link">
                                     {{ ucfirst($subkategori->nama) }}
                                 </a>
                             @endforeach
@@ -103,6 +103,7 @@
     </div>
 
     <div id="semuaBukuContainer" class="d-flex flex-wrap gap-3 justify-content-start">
+        {{-- Konten ini akan di-render oleh PHP saat load awal, dan oleh JS saat AJAX --}}
         @forelse ($allBooks as $buku)
             <div class="d-flex flex-column align-items-center book-wrapper">
                 <div class="card book-card shadow border-0 position-relative overflow-hidden" style="width: 200px; height: 250px;">
@@ -125,25 +126,25 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0 fw-bold">Buku Terbaru</h4>
         <div class="dropdown">
-            <button class="btn btn-outline-success fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            {{-- Tambahkan ID pada tombol agar mudah diakses JavaScript --}}
+            <button class="btn btn-outline-success fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" id="sortNewBooksButton">
                 Urutkan: {{ ($sortOrderNewBooks ?? 'desc') == 'desc' ? 'Terbaru' : 'Terlama' }}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item sort-item" href="{{ route('home', array_merge(request()->query(), ['sort_new_books' => 'desc'])) }}">Terbaru</a></li>
-                <li><a class="dropdown-item sort-item" href="{{ route('home', array_merge(request()->query(), ['sort_new_books' => 'asc'])) }}">Terlama</a></li>
+                {{-- Ubah link sort untuk AJAX: href="#" dan gunakan data-sort-order --}}
+                <li><a class="dropdown-item sort-item" href="#" data-sort-order="desc">Terbaru</a></li>
+                <li><a class="dropdown-item sort-item" href="#" data-sort-order="asc">Terlama</a></li>
             </ul>
         </div>
     </div>
 
     <div class="scroll-horizontal d-flex py-2 px-1 gap-3" id="bukuTerbaruContainer">
+        {{-- Konten ini akan di-render oleh PHP saat load awal, dan oleh JS saat AJAX --}}
         @forelse ($bukuTerbaru as $buku)
             <div class="d-flex flex-column align-items-center book-wrapper">
                 <div class="card book-card shadow border-0">
                     <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
                         alt="{{ $buku->judul }}" class="w-100 h-100 book-cover">
-                </div>
-                <div class="mt-2">
-                    <a href="{{ route('buku.show', $buku->id) }}" class="btn btn-sm btn-light border shadow">Detail</a>
                 </div>
             </div>
         @empty
@@ -163,7 +164,7 @@
             <strong>Whatsapp:</strong> 08156866002
         </div>
 
-        <div class="social-links d-flex justify-content-center mb-3 gap-3">
+        <div class="social-links d-flex justify-content-center mb-3 gap-3"> 
             <a href="https://facebook.com/" target="_blank"><i class="bi bi-facebook fs-5"></i></a>
             <a href="https://instagram.com" target="_blank"><i class="bi bi-instagram fs-5"></i></a>
             <a href="mailto:media.ppmaswaja@gmail.com"><i class="bi bi-envelope fs-5"></i></a>
@@ -181,7 +182,126 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Logika untuk toggle dropdown kategori (visual saja, tanpa filter DOM)
+
+        // --- Fungsi untuk merender HTML dari data buku (JSON) ---
+        function renderBooks(books, containerId, isNewBooksSection = false) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            let html = '';
+            if (books.length === 0) {
+                html = isNewBooksSection ? '<p class="text-muted">Tidak ada buku terbaru ditemukan.</p>' :
+                                           '<div class="col-12"><p class="text-muted">Tidak ada buku ditemukan.</p></div>';
+            } else {
+                books.forEach(buku => {
+                    const imageUrl = buku.gambar ? `{{ asset('storage') }}/${buku.gambar}` : 'https://via.placeholder.com/200x150?text=No+Image';
+                    if (isNewBooksSection) {
+                        html += `
+                            <div class="d-flex flex-column align-items-center book-wrapper">
+                                <div class="card book-card shadow border-0">
+                                    <img src="${imageUrl}" alt="${buku.judul}" class="w-100 h-100 book-cover">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="d-flex flex-column align-items-center book-wrapper">
+                                <div class="card book-card shadow border-0 position-relative overflow-hidden" style="width: 200px; height: 250px;">
+                                    <img src="${imageUrl}" alt="${buku.judul}" class="w-100 h-100 book-cover object-fit-cover">
+                                </div>
+                                <div class="mt-2">
+                                    <a href="{{ url('buku') }}/${buku.id}" class="btn btn-sm btn-light border shadow">Detail</a>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            container.innerHTML = html;
+        }
+
+
+        // --- Fungsi untuk mengirim permintaan AJAX dan memperbarui DOM ---
+        async function fetchBooksAndUpdate(params) {
+            // Dapatkan semua parameter hidden dari form search
+            const searchForm = document.getElementById('searchForm');
+            const formData = new FormData(searchForm);
+            const currentParams = new URLSearchParams();
+            for (let pair of formData.entries()) { 
+                currentParams.append(pair[0], pair[1]);
+            }
+
+            // Gabungkan dengan parameter baru yang dikirimkan
+            for (const key in params) { 
+                if (params[key] !== null) { 
+                    currentParams.set(key, params[key]);
+                } else {
+                    currentParams.delete(key); 
+                }
+            }
+
+            // Buat URL dengan parameter query
+            const url = `{{ route('home') }}?${currentParams.toString()}`;
+
+            try {
+                // Tampilkan loading indicator jika diperlukan
+                // const loadingSpinner = document.getElementById('loadingSpinner');
+                // if (loadingSpinner) loadingSpinner.style.display = 'block';
+
+                const response = await fetch(url, { 
+                    headers: { 
+                        'X-Requested-With': 'XMLHttpRequest' 
+                    }
+                });
+
+                if (!response.ok) { 
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json(); // Ambil respons sebagai JSON (bukan HTML)
+
+                // Render dan perbarui konten "Semua Buku"
+                renderBooks(data.allBooks, 'semuaBukuContainer', false);
+
+                // Render dan perbarui konten "Buku Terbaru"
+                renderBooks(data.bukuTerbaru, 'bukuTerbaruContainer', true);
+
+                // Perbarui teks tombol Urutkan di bagian Buku Terbaru
+                const sortNewBooksButton = document.getElementById('sortNewBooksButton');
+                if (sortNewBooksButton) {
+                    sortNewBooksButton.textContent = 'Urutkan: ' + data.sortOrderNewBooksText; 
+                }
+
+                // Update nilai hidden input di form search agar sesuai dengan state terbaru
+                document.getElementById('searchInput').value = currentParams.get('query') || '';
+                document.getElementById('hiddenSubkategori').value = currentParams.get('subkategori') || '';
+                document.getElementById('hiddenSortAllBooks').value = currentParams.get('sort_all_books') || 'desc';
+                document.getElementById('hiddenSortNewBooks').value = currentParams.get('sort_new_books') || 'desc';
+
+                // Opsional: Perbarui URL di address bar tanpa reload (untuk bookmarking & back/forward button)
+                const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${currentParams.toString()}`;
+                history.pushState({ path: newUrl }, '', newUrl);
+
+
+            } catch (error) { 
+                console.error('Error fetching books:', error);
+                // Tampilkan pesan error ke pengguna di UI jika diperlukan
+            } finally {
+                // Sembunyikan loading indicator
+                // const loadingSpinner = document.getElementById('loadingSpinner');
+                // if (loadingSpinner) loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // --- Logika Search Form ---
+        const searchForm = document.getElementById('searchForm');
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah reload halaman
+            const query = document.getElementById('searchInput').value;
+            fetchBooksAndUpdate({ query: query, subkategori: null }); // Reset subkategori saat search baru
+        });
+
+        // --- Logika Dropdown Kategori & Subkategori ---
         const dropdownKategoris = document.querySelectorAll('.dropdown-kategori');
         dropdownKategoris.forEach(dropdown => {
             const button = dropdown.querySelector('.kategori-btn');
@@ -192,14 +312,47 @@
                     subkategoriMenu.classList.toggle('active');
                 });
 
+                // Klik di luar dropdown untuk menutup
                 document.addEventListener('click', function(event) {
                     if (!dropdown.contains(event.target)) {
                         subkategoriMenu.classList.remove('active');
                     }
                 });
             }
+
+            // Event listener untuk link subkategori
+            const subkategoriLinks = dropdown.querySelectorAll('.subkategori-link');
+            subkategoriLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah reload halaman
+                    const subkategoriId = event.target.dataset.subkategoriId; // Ambil ID dari data-atribut
+                    fetchBooksAndUpdate({ subkategori: subkategoriId, query: null }); // Reset query saat filter subkategori
+                    subkategoriMenu.classList.remove('active'); // Tutup dropdown setelah klik
+                });
+            });
         });
+
+        // --- Logika Sort Buku Terbaru/Terlama ---
+        // Targetkan link di dalam dropdown menu, bukan tombol dropdown-toggle
+        const sortButtonsNewBooks = document.querySelectorAll('#bukuTerbaruSection .sort-item');
+        sortButtonsNewBooks.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah reload halaman
+                const sortOrder = event.target.dataset.sortOrder; // Ambil sort order dari data-atribut
+                fetchBooksAndUpdate({ sort_new_books: sortOrder });
+            });
+        });
+
+        // Mengatasi scroll position (ini tetap relevan jika ada navigasi non-AJAX)
+        // Note: Dengan AJAX, biasanya tidak perlu lagi sessionStorage untuk scroll position
+        // kecuali ada navigasi eksternal atau reload paksa.
+        const scrollPos = sessionStorage.getItem('scrollPos');
+        if (scrollPos) {
+            window.scrollTo(0, parseInt(scrollPos));
+            sessionStorage.removeItem('scrollPos');
+        }
     });
+
 </script>
 
 </body>

@@ -12,16 +12,15 @@ class homepageController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('query', '');
-        $subkategoriDipilih = $request->input('subkategori');
-        $sortOrderAllBooks = $request->input('sort_all_books', 'desc'); // Default 'desc' untuk semua buku
-        $sortOrderNewBooks = $request->input('sort_new_books', 'desc'); // Default 'desc' untuk buku terbaru
+        $subkategori = $request->input('subkategori');
+        $sortOrderAllBooks = $request->input('sort_all_books', 'desc');
+        $sortOrderNewBooks = $request->input('sort_new_books', 'desc');
 
         $kategoris = Kategori::with('subkategoris')->get();
 
-        // --- Logika untuk "LIHAT SEMUA BUKU" (sebelumnya `allBooksForFiltering`) ---
+        // --- Logika untuk "LIHAT SEMUA BUKU" ---
         $allBooksQuery = Buku::query();
 
-        // 1. Filter berdasarkan pencarian (judul atau penulis)
         if (!empty($query)) {
             $allBooksQuery->where(function($q) use ($query) {
                 $q->where('judul', 'like', '%' . $query . '%')
@@ -29,31 +28,44 @@ class homepageController extends Controller
             });
         }
 
-        // 2. Filter berdasarkan subkategori
-        if ($subkategoriDipilih) {
-            $allBooksQuery->where('subkategori_id', $subkategoriDipilih);
+        if ($subkategori) {
+            $allBooksQuery->where('subkategori_id', $subkategori);
         }
 
-        // 3. Sorting untuk "LIHAT SEMUA BUKU"
-        // Anda bisa menambahkan tombol sortir untuk bagian ini di frontend jika perlu
-        $allBooksQuery->orderBy('created_at', $sortOrderAllBooks); // Sortir berdasarkan created_at
+        $allBooksQuery->orderBy('created_at', $sortOrderAllBooks);
 
         $allBooks = $allBooksQuery->select('id', 'judul', 'penulis', 'gambar', 'kategori_id', 'subkategori_id', 'created_at')
                                 ->get();
 
 
-        // --- Logika untuk "BUKU TERBARU" (sebelumnya `bukuTerbaruUntukJS`) ---
-        // Ini akan selalu menampilkan buku terbaru, dengan opsi sortir terbaru/terlama
-        $bukuTerbaru = Buku::orderBy('created_at', $sortOrderNewBooks)->take(50)->get(); // Ambil 50 buku
+        // --- Logika untuk "BUKU TERBARU" ---
+        $bukuTerbaru = Buku::orderBy('created_at', $sortOrderNewBooks)->take(50)->get();
+
+        // **PENTING: Ubah logika ini untuk permintaan AJAX**
+        if ($request->ajax()) {
+            return response()->json([
+                'allBooks' => $allBooks, // Mengembalikan koleksi Buku
+                'bukuTerbaru' => $bukuTerbaru, // Mengembalikan koleksi Buku
+                'sortOrderNewBooksText' => ($sortOrderNewBooks ?? 'desc') == 'desc' ? 'Terbaru' : 'Terlama'
+            ]);
+        }
 
         return view('homepage', compact(
             'kategoris',
             'query',
-            'subkategoriDipilih',
-            'allBooks', // Mengganti nama variabel agar lebih jelas
-            'bukuTerbaru', // Mengganti nama variabel agar lebih jelas
+            'subkategori',
+            'allBooks',
+            'bukuTerbaru',
             'sortOrderAllBooks',
             'sortOrderNewBooks'
         ));
+    }
+
+        //  Detail buku.
+
+    public function show($id)
+    {
+        $buku = Buku::with('kategori')->findOrFail($id);
+        return view('detailbuku', compact('buku'));
     }
 }
