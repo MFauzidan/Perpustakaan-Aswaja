@@ -8,13 +8,13 @@
   margin-right: 8px;
 }
 
-
 @media (max-width: 576px) {
   .navbar-logo {
     height: 40px;
   }
 }
-.library-name {
+
+.library-title {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -23,17 +23,15 @@
 }
 
 @media (max-width: 576px) {
-  .library-name {
+  .library-title {
     font-size: 14px;
     max-width: 170px;
   }
 }
 
-
 /* Subjudul */
 .library-subtitle {
   font-size: 0.90rem;
-  /* color: #6c757d; abu-abu seperti Bootstrap text-muted */
   line-height: 1.2;
 }
 
@@ -42,7 +40,6 @@
     font-size: 12px;
   }
 }
-
 
 /* ======================================
    HERO SECTION
@@ -78,7 +75,6 @@
   }
 }
 
-
 /* ======================================
    SEARCH BOX
 ====================================== */
@@ -112,317 +108,289 @@
   background: #e2e6ea;
 }
 
-
 /* ======================================
-   BUKU - Card & Wrapper
+   HORIZONTAL SCROLL CONTAINERS
 ====================================== */
 
-.book-wrapper {
-  width: 200px;
+.horizontal-scroll-container {
+    width: 100%;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 15px 0;
+    margin: 0 -15px;
 }
 
-.book-wrapper.hidden {
-  display: none !important;
+.horizontal-scroll-container.mobile-scroll {
+    padding: 15px 0;
 }
 
-.book-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.horizontal-scroll-wrapper {
+    display: inline-flex;
+    gap: 20px;
+    padding: 0 15px;
 }
 
-.scroll-horizontal {
-  overflow-x: auto;
-  white-space: nowrap;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
+/* Custom scrollbar styling */
+.horizontal-scroll-container::-webkit-scrollbar {
+    height: 8px;
 }
 
-.scroll-horizontal::-webkit-scrollbar {
-  height: 8px;
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
 }
 
-.scroll-horizontal::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+.horizontal-scroll-container::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-.scroll-horizontal::-webkit-scrollbar-track {
-  background: #f1f1f1;
+/* ======================================
+   BOOK ITEMS
+====================================== */
+
+.book-item {
+    display: inline-block;
+    width: 180px;
+    vertical-align: top;
+    white-space: normal;
+    flex: 0 0 auto;
 }
 
 .book-card {
-  width: 200px;
-  min-height: 370px;
-  display: flex;
-  flex-direction: column;
-  scroll-snap-align: start;
-  overflow: hidden;
-  border: none;
-  border-radius: 8px;
-  position: relative;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  transition: transform 0.3s;
+    width: 180px;
+    height: 250px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .book-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.book-card .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.book-card:hover .overlay {
-  opacity: 1;
-}
-
-.sinopsis-teks {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space: nowrap;
-  max-width: 100%;
-}
-
-@media (max-width: 576px) {
-  .book-card,
-  .book-wrapper {
+.book-cover {
     width: 100%;
-  }
+    height: 100%;
+    object-fit: cover;
 }
-
 
 /* ======================================
    KATEGORI SECTION
 ====================================== */
 
-.kategori-wrapper {
-  padding: 40px 20px;
-  position: relative;
-}
-
 .dropdown-kategori {
-  position: relative;
+    position: relative;
+    display: inline-block;
 }
 
 .kategori-btn {
-  background-color: blac;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  padding: 10px 20px;
-  min-width: 100px;
-  font-weight: bold;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 15px;
+    min-width: 120px;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.kategori-btn:hover {
+    background-color: #e9ecef;
 }
 
 .dropdown-subkategori {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #2e2d2d;
-  color: white;
-  border-radius: 4px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #2e2d2d;
+    color: white;
+    border-radius: 4px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.dropdown-kategori:hover .dropdown-subkategori {
-  display: block;
+.dropdown-subkategori.active {
+    display: block;
 }
 
 .subkategori-link {
-  display: block;
-  padding: 10px 15px;
-  text-decoration: none;
-  color: white;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background-color 0.2s;
 }
 
 .subkategori-link:hover {
-  background-color: #4d4a4a;
+    background-color: #4d4a4a;
 }
-
-/* BTN LIHAT SEMUA BUKU */
-/*
-:root {
-  --brown: #8B4513; Warna utama
-  --brown-hover: #A0522D; Warna saat hover
-}
-
-Tombol outline coklat
-.btn-outline-brown {
-  color: var(--brown);
-  border: 2px solid var(--brown);
-  background-color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  padding: 8px 16px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-}
-
-.btn-outline-brown:hover,
-.btn-outline-brown:focus {
-  background-color: var(--brown);
-  color: white;
-} */ */
-
 
 /* ======================================
    FOOTER
 ====================================== */
 
 .footer {
-  color: var(--default-color);
-  background-color: var(--background-color);
-  font-size: 14px;
-  text-align: center;
-  padding: 30px 0;
-  position: relative;
+    color: white;
+    background-color: #343a40;
+    font-size: 14px;
+    text-align: center;
+    padding: 30px 0;
+    position: relative;
 }
 
 .footer h3 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 15px;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
 }
 
 .footer p {
-  font-size: 15px;
-  font-style: italic;
-  margin-bottom: 30px;
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 30px;
 }
 
 .footer .social-links {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .footer .social-links a {
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent-color);
-  color: var(--contrast-color);
-  line-height: 1;
-  margin: 0 4px;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  transition: 0.3s;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #6c757d;
+    color: white;
+    line-height: 1;
+    margin: 0 4px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    transition: 0.3s;
 }
 
 .footer .social-links a:hover {
-  background: color-mix(in srgb, var(--accent-color), transparent 20%);
-  text-decoration: none;
+    background: rgba(108, 117, 125, 0.8);
+    text-decoration: none;
 }
 
 .footer .copyright {
-  padding-top: 25px;
-  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer .credits {
-  font-size: 13px;
-  padding-top: 5px;
+    font-size: 13px;
+    padding-top: 5px;
 }
 
-/* ========== RESPONSIVE SECTION TAMBAHAN ========== */
+/* ======================================
+   RESPONSIVE ADJUSTMENTS
+====================================== */
+
+@media (max-width: 992px) {
+    .book-item {
+        width: 160px;
+    }
+
+    .book-card {
+        width: 160px;
+        height: 220px;
+    }
+}
 
 @media (max-width: 768px) {
-  /* Navbar */
-  .navbar-brand {
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 0.3rem;
-  }
-  .navbar-logo {
-    height: 36px;
-    margin-right: 8px;
-  }
-  .library-title {
-    font-size: 0.85rem;
-  }
-  .library-subtitle {
-    font-size: 0.7rem;
-  }
+    /* Navbar */
+    .navbar-brand {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.3rem;
+    }
 
-  /* Hero Section */
-  .hero h1 {
-    font-size: 1.5rem;
-  }
+    .navbar-logo {
+        height: 36px;
+        margin-right: 8px;
+    }
 
-  .hero p {
-    font-size: 0.9rem;
-  }
+    .library-title {
+        font-size: 0.85rem;
+    }
 
-  /* Kategori Section */
-  .kategori-wrapper {
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px 10px;
-  }
+    .library-subtitle {
+        font-size: 0.7rem;
+    }
 
-  .kategori-btn {
-    width: 100%;
-  }
+    /* Hero Section */
+    .hero h1 {
+        font-size: 1.5rem;
+    }
 
-  .dropdown-subkategori {
-    position: relative;
-    width: 100%;
-    margin-top: 10px;
-  }
+    .hero p {
+        font-size: 0.9rem;
+    }
 
-  /* Buku Wrapper */
-  .book-wrapper {
-    width: 100% !important;
-  }
+    /* Book Items */
+    .book-item {
+        width: 140px;
+    }
 
-  .book-card {
-    width: 100% !important;
-    height: auto !important;
-  }
+    .book-card {
+        width: 140px;
+        height: 190px;
+    }
 
-  .scroll-horizontal {
-    flex-direction: column;
-    overflow-x: unset;
-  }
+    .horizontal-scroll-wrapper {
+        gap: 15px;
+    }
 
-  /* Footer */
-  .footer h3 {
-    font-size: 22px;
-  }
+    /* Kategori */
+    .kategori-btn {
+        min-width: 100px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
 
-  .footer p, .footer .credits {
-    font-size: 12px;
-  }
+@media (max-width: 576px) {
+    .book-item {
+        width: 120px;
+    }
 
-  .footer .social-links {
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+    .book-card {
+        width: 120px;
+        height: 160px;
+    }
 
-  .footer .social-links a {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-  }
+    .horizontal-scroll-wrapper {
+        gap: 12px;
+    }
+
+    /* Footer */
+    .footer h3 {
+        font-size: 22px;
+    }
+
+    .footer p, .footer .credits {
+        font-size: 12px;
+    }
+
+    .footer .social-links {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .footer .social-links a {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
 }
