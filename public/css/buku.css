@@ -8,13 +8,13 @@
   margin-right: 8px;
 }
 
-
 @media (max-width: 576px) {
   .navbar-logo {
     height: 40px;
   }
 }
-.library-name {
+
+.library-title {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -23,17 +23,15 @@
 }
 
 @media (max-width: 576px) {
-  .library-name {
+  .library-title {
     font-size: 14px;
     max-width: 170px;
   }
 }
 
-
 /* Subjudul */
 .library-subtitle {
   font-size: 0.90rem;
-  /* color: #6c757d; abu-abu seperti Bootstrap text-muted */
   line-height: 1.2;
 }
 
@@ -42,7 +40,6 @@
     font-size: 12px;
   }
 }
-
 
 /* ======================================
    HERO SECTION
@@ -78,7 +75,6 @@
   }
 }
 
-
 /* ======================================
    SEARCH BOX
 ====================================== */
@@ -112,17 +108,66 @@
   background: #e2e6ea;
 }
 
+/* ======================================
+   SCROLL CONTAINERS (Mobile)
+====================================== */
+
+.scroll-container-mobile {
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 15px;
+  margin-bottom: -15px;
+}
+
+.scroll-container-mobile::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-container-mobile::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.scroll-container-mobile::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.kategori-scroll-container .kategori-wrapper {
+  display: inline-flex;
+  gap: 12px;
+  padding: 10px 5px;
+}
+
+.books-scroll-container .books-wrapper {
+  display: inline-flex;
+  gap: 15px;
+  padding: 10px 5px;
+}
 
 /* ======================================
    BUKU - Card & Wrapper
 ====================================== */
 
 .book-wrapper {
-  width: 200px;
+  width: 150px;
+  display: inline-block;
+  white-space: normal;
+  vertical-align: top;
 }
 
-.book-wrapper.hidden {
-  display: none !important;
+.book-card {
+  width: 150px;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
 }
 
 .book-cover {
@@ -131,101 +176,50 @@
   object-fit: cover;
 }
 
-.scroll-horizontal {
-  overflow-x: auto;
-  white-space: nowrap;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-}
+@media (min-width: 768px) {
+  .kategori-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    padding: 20px 0;
+  }
 
-.scroll-horizontal::-webkit-scrollbar {
-  height: 8px;
-}
+  .books-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+  }
 
-.scroll-horizontal::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.scroll-horizontal::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.book-card {
-  width: 200px;
-  min-height: 370px;
-  display: flex;
-  flex-direction: column;
-  scroll-snap-align: start;
-  overflow: hidden;
-  border: none;
-  border-radius: 8px;
-  position: relative;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  transition: transform 0.3s;
-}
-
-.book-card:hover {
-  transform: translateY(-5px);
-}
-
-.book-card .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.book-card:hover .overlay {
-  opacity: 1;
-}
-
-.sinopsis-teks {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space: nowrap;
-  max-width: 100%;
-}
-
-@media (max-width: 576px) {
-  .book-card,
   .book-wrapper {
-    width: 100%;
+    width: 200px;
+  }
+
+  .book-card {
+    width: 200px;
+    height: 250px;
   }
 }
-
 
 /* ======================================
    KATEGORI SECTION
 ====================================== */
 
-.kategori-wrapper {
-  padding: 40px 20px;
-  position: relative;
-}
-
 .dropdown-kategori {
   position: relative;
+  display: inline-block;
 }
 
 .kategori-btn {
-  background-color: blac;
+  background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 6px;
-  padding: 10px 20px;
+  padding: 8px 15px;
   min-width: 100px;
   font-weight: bold;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .dropdown-subkategori {
@@ -241,13 +235,13 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.dropdown-kategori:hover .dropdown-subkategori {
+.dropdown-subkategori.active {
   display: block;
 }
 
 .subkategori-link {
   display: block;
-  padding: 10px 15px;
+  padding: 8px 12px;
   text-decoration: none;
   color: white;
   font-size: 14px;
@@ -258,41 +252,13 @@
   background-color: #4d4a4a;
 }
 
-/* BTN LIHAT SEMUA BUKU */
-/*
-:root {
-  --brown: #8B4513; Warna utama
-  --brown-hover: #A0522D; Warna saat hover
-}
-
-Tombol outline coklat
-.btn-outline-brown {
-  color: var(--brown);
-  border: 2px solid var(--brown);
-  background-color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  padding: 8px 16px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-}
-
-.btn-outline-brown:hover,
-.btn-outline-brown:focus {
-  background-color: var(--brown);
-  color: white;
-} */ */
-
-
 /* ======================================
    FOOTER
 ====================================== */
 
 .footer {
-  color: var(--default-color);
-  background-color: var(--background-color);
+  color: white;
+  background-color: #343a40;
   font-size: 14px;
   text-align: center;
   padding: 30px 0;
@@ -320,8 +286,8 @@ Tombol outline coklat
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent-color);
-  color: var(--contrast-color);
+  background: #6c757d;
+  color: white;
   line-height: 1;
   margin: 0 4px;
   border-radius: 50%;
@@ -331,13 +297,13 @@ Tombol outline coklat
 }
 
 .footer .social-links a:hover {
-  background: color-mix(in srgb, var(--accent-color), transparent 20%);
+  background: rgba(108, 117, 125, 0.8);
   text-decoration: none;
 }
 
 .footer .copyright {
   padding-top: 25px;
-  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer .credits {
@@ -345,7 +311,7 @@ Tombol outline coklat
   padding-top: 5px;
 }
 
-/* ========== RESPONSIVE SECTION TAMBAHAN ========== */
+/* ========== RESPONSIVE SECTION ========== */
 
 @media (max-width: 768px) {
   /* Navbar */
@@ -359,12 +325,15 @@ Tombol outline coklat
     height: 36px;
     margin-right: 8px;
   }
+
   .library-title {
     font-size: 0.85rem;
   }
+
   .library-subtitle {
     font-size: 0.7rem;
   }
+
   /* Hero Section */
   .hero h1 {
     font-size: 1.5rem;
@@ -372,38 +341,6 @@ Tombol outline coklat
 
   .hero p {
     font-size: 0.9rem;
-  }
-
-  /* Kategori Section */
-  .kategori-wrapper {
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px 10px;
-  }
-
-  .kategori-btn {
-    width: 100%;
-  }
-
-  .dropdown-subkategori {
-    position: relative;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  /* Buku Wrapper */
-  .book-wrapper {
-    width: 100% !important;
-  }
-
-  .book-card {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .scroll-horizontal {
-    flex-direction: column;
-    overflow-x: unset;
   }
 
   /* Footer */
