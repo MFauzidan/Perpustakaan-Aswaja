@@ -108,33 +108,30 @@
         </div>
     </div>
 
-    <div class="container">
-        <section id="semuaBukuSection">
-            <div id="semuaBukuContainer" class="books-scroll-container">
-                <div class="books-wrapper">
-                    @forelse ($allBooks as $buku)
-                        <div class="d-flex flex-column align-items-center book-wrapper">
-                            <div class="card book-card shadow border-0 position-relative overflow-hidden">
-                                <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
-                                    alt="{{ $buku->judul }}" class="w-100 h-100 book-cover object-fit-cover">
-                            </div>
-                            <div class="mt-2">
-                                <a href="{{ route('buku.show', $buku->id) }}" class="btn btn-sm btn-light border shadow">Detail</a>
-                            </div>
+<div class="container">
+    <section id="semuaBukuSection">
+        <div id="semuaBukuContainer">
+            <div class="books-wrapper">
+                @forelse ($allBooks as $buku)
+                    <div class="d-flex flex-column align-items-center book-wrapper">
+                        <div class="card book-card shadow border-0 position-relative overflow-hidden">
+                            <img src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/200x150?text=No+Image' }}"
+                                alt="{{ $buku->judul }}" class="w-100 h-100 book-cover object-fit-cover">
                         </div>
-                    @empty
-                        <div class="col-12">
-                            <p class="text-muted">Tidak ada buku ditemukan.</p>
+                        <div class="mt-2">
+                            <a href="{{ route('buku.show', $buku->id) }}" class="btn btn-sm btn-light border shadow">Detail</a>
                         </div>
-                    @endforelse
-                </div>
+                    </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-muted">Tidak ada buku ditemukan.</p>
+                    </div>
+                @endforelse
             </div>
-        </section>
-
-        <div class="mt-4">
-            {{ $allBooks->withQueryString()->links() }}
         </div>
-    </div>
+    </section>
+</div>
+
 
     <footer id="footer" class="footer bg-dark text-white py-5">
         <div class="container text-center">
@@ -226,7 +223,7 @@
                     const data = await response.json();
 
                     renderBooks(data.allBooks, 'semuaBukuContainer', false); // Render buku
-                    
+
                     // Update nilai input tersembunyi
                     document.getElementById('searchInput').value = currentParams.get('query') || '';
                     document.getElementById('hiddenSubkategori').value = currentParams.get('subkategori') || '';
@@ -294,7 +291,7 @@
                         const subkategoriId = event.target.dataset.subkategoriId;
                         // Hapus `query` dari `fetchBooksAndUpdate` jika Anda ingin filter kategori tidak mereset pencarian.
                         // Namun, jika ingin pencarian tetap ada saat subkategori dipilih, biarkan `query: currentParams.get('query')`
-                        fetchBooksAndUpdate({ subkategori: subkategoriId, query: document.getElementById('searchInput').value }); 
+                        fetchBooksAndUpdate({ subkategori: subkategoriId, query: document.getElementById('searchInput').value });
                         subkategoriMenu.classList.remove('active');
                     });
                 });
