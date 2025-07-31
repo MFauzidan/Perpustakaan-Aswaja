@@ -20,31 +20,43 @@
     <link href="{{ asset('css/buku.css') }}" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3">
-        <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-2 px-md-3">
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3">
+  <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between px-2 px-md-3">
 
-            <a class="navbar-brand mb-0 h1 d-flex align-items-center text-truncate" href="{{ route('home') }}" style="max-width: 75%;">
-                <img src="{{ asset('assets/img/logo1.png') }}" alt="Logo" class="navbar-logo">
-                <div>
-                    <div class="library-title">PERPUSTAKAAN PPM-AN</div>
-                    <div class="library-subtitle">Pesantren Pelajar Mahasiswa Aswaja Nusantara</div>
-                </div>
-            </a>
+    <a class="navbar-brand mb-0 h1 d-flex align-items-center gap-2 text-truncate" href="{{ route('home') }}" style="max-width: 75%;">
+      <img src="{{ asset('assets/img/logo1.png') }}" alt="Logo" class="navbar-logo">
+      <div class="text-start">
+        <div class="library-title">PERPUSTAKAAN PPM-AN</div>
+        <div class="library-subtitle">Pesantren Pelajar Mahasiswa Aswaja Nusantara</div>
+      </div>
+    </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-            <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto w-100 justify-content-end text-end mt-2 mt-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram fa-lg"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube fa-lg"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook fa-lg"></i></a></li>
-                </ul>
-            </div>
+    <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto w-100 justify-content-end text-end mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.instagram.com" target="_blank">
+            <i class="fab fa-instagram fa-lg"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.youtube.com" target="_blank">
+            <i class="fab fa-youtube fa-lg"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.facebook.com" target="_blank">
+            <i class="fab fa-facebook fa-lg"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-        </div>
-    </nav>
+  </div>
+</nav>
 
     <section class="hero text-center">
         <div class="container">

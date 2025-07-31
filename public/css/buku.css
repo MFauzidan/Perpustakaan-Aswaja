@@ -1,45 +1,43 @@
 /* ======================================
    NAVBAR (Logo & Sosial Media)
 ====================================== */
-
 .navbar-logo {
   height: 50px;
   border-radius: 50%;
-  margin-right: 8px;
+  object-fit: contain;
 }
 
-@media (max-width: 576px) {
+.library-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.library-subtitle {
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    flex-direction: row !important; /* Tetap sejajar horizontal */
+    align-items: center !important;
+    gap: 0.5rem;
+  }
+
+  .library-title {
+    font-size: 1rem;
+  }
+
+  .library-subtitle {
+    font-size: 0.75rem;
+  }
+
   .navbar-logo {
     height: 40px;
   }
 }
 
-.library-title {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-@media (max-width: 576px) {
-  .library-title {
-    font-size: 14px;
-    max-width: 170px;
-  }
-}
-
-/* Subjudul */
-.library-subtitle {
-  font-size: 0.90rem;
-  line-height: 1.2;
-}
-
-@media (max-width: 576px) {
-  .library-subtitle {
-    font-size: 12px;
-  }
-}
 
 /* ======================================
    HERO SECTION
