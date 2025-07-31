@@ -131,16 +131,35 @@
   background: rgba(0, 0, 0, 0.05);
 }
 
-.kategori-scroll-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+/* Kategori Responsive Grid */
+.kategori-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
-.kategori-wrapper {
-  display: inline-flex;
-  gap: 12px;
-  padding: 10px 5px;
+@media (max-width: 576px) {
+    .kategori-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        overflow-x: unset;
+    }
+
+    .dropdown-kategori {
+        width: 100%;
+    }
+
+    .kategori-btn {
+        width: 100%;
+        font-size: 0.85rem;
+        padding: 6px 8px;
+    }
 }
+
+
 
 
 .books-scroll-container .books-wrapper {
