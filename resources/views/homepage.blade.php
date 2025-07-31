@@ -82,27 +82,26 @@
             </div>
         </div>
 
-        <div class="horizontal-scroll-container">
-            <div class="horizontal-scroll-wrapper">
-                @foreach ($kategoris as $kategori)
-                    <div class="dropdown-kategori position-relative">
-                        <button type="button" class="kategori-btn">
-                            {{ ucfirst($kategori->nama) }}
-                            <i class="bi bi-caret-down-fill"></i>
-                        </button>
-                        @if ($kategori->subkategoris && $kategori->subkategoris->count() > 0)
-                            <div class="dropdown-subkategori">
-                                @foreach ($kategori->subkategoris as $subkategori)
-                                    <a href="#" data-subkategori-id="{{ $subkategori->id }}" class="subkategori-link">
-                                        {{ ucfirst($subkategori->nama) }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
+        <div class="kategori-container">
+            @foreach ($kategoris as $kategori)
+                <div class="dropdown-kategori position-relative">
+                    <button type="button" class="kategori-btn">
+                        {{ ucfirst($kategori->nama) }}
+                        <i class="bi bi-caret-down-fill"></i>
+                    </button>
+                    @if ($kategori->subkategoris && $kategori->subkategoris->count() > 0)
+                        <div class="dropdown-subkategori">
+                            @foreach ($kategori->subkategoris as $subkategori)
+                                <a href="#" data-subkategori-id="{{ $subkategori->id }}" class="subkategori-link">
+                                    {{ ucfirst($subkategori->nama) }}
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @endforeach
         </div>
+
     </div>
 </section>
 
