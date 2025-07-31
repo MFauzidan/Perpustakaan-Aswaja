@@ -7,7 +7,7 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class homepageController extends Controller
+class HomepageController extends Controller
 {
     public function index(Request $request)
     {
